@@ -1,0 +1,77 @@
+// Import GoogleGenAI
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({ apiKey: "YOUR_API_KEY" }); // Replace with your actual API key
+
+// Chatbot functionality
+document.getElementById('send-message').addEventListener('click', async () => {
+    const userInput = document.getElementById('userInput').value;
+
+    // Create a new div for the user message
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.classList.add('message', 'user-message'); // Add classes for styling
+    userMessageDiv.textContent = userInput; // Display the user's input
+    document.querySelector('.chat-body').appendChild(userMessageDiv); // Append user message to chat body
+
+    // Create a new div for the bot response
+    const botResponseDiv = document.createElement('div');
+    botResponseDiv.classList.add('message', 'bot-message'); // Add classes for styling
+    botResponseDiv.innerHTML = 'Generating...'; // Temporary loading message
+    document.querySelector('.chat-body').appendChild(botResponseDiv); // Append bot message to chat body
+
+    // Normalize user input for easier comparison
+    const normalizedInput = userInput.toLowerCase().trim();
+
+    // Check for greetings
+    if (normalizedInput === "hello" || normalizedInput === "hi" || normalizedInput === "hey") {
+        botResponseDiv.textContent = "Hello! 👋 How can I assist you today?";
+    } else if (normalizedInput === "can i pass without studying?") {
+        botResponseDiv.textContent = "No, it's generally not advisable to pass without studying.";
+    } else if (normalizedInput.includes("study plan")) {
+        // Fetch the study plan from the API
+        try {
+            const response = await fetch('http://localhost:3000/api/generate-plan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input: userInput }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            const plan = data.plan.split('\n').filter(line => line.trim() !== ''); // Get the study plan items
+            
+            // Format the study plan as bullet points
+            botResponseDiv.innerHTML = '<h3>Your Study Plan:</h3>' +
+                '<ul>' + // Use an unordered list for better formatting
+                plan.map(item => `<li>${item}</li>`).join('') +
+                '</ul>';
+
+            // Save to history
+            history.push({ input: userInput, plan: plan.join(', ') }); // Save the input and plan to history
+            localStorage.setItem('history', JSON.stringify(history)); // Update local storage
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            botResponseDiv.textContent = 'Failed to generate study plan. Please try again later.';
+        }
+    } else {
+        // Use GoogleGenAI for other queries
+        try {
+            const aiResponse = await ai.models.generateContent({
+                model: "gemini-2.0-flash",
+                contents: userInput,
+            });
+            botResponseDiv.textContent = aiResponse.text; // Display AI response
+        } catch (error) {
+            console.error('Error generating content with AI:', error);
+            botResponseDiv.textContent = 'Failed to generate response. Please try again later.';
+        }
+    }
+
+    // Clear the input field
+    document.getElementById('userInput').value = '';
+}); 
