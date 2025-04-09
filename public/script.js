@@ -69,6 +69,8 @@ loginForm.addEventListener('submit', (e) => {
     const user = users.find(user => user.email === email && user.password === password);
     if (user) {
         currentUser = user;
+        // Store user information in local storage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
         authContainer.classList.add('hidden');
         chatContainer.classList.remove('hidden');
         userNameSpan.textContent = user.name;
@@ -76,6 +78,26 @@ loginForm.addEventListener('submit', (e) => {
         alert('Invalid credentials. Please try again.');
     }
 });
+
+// Check if user is already logged in on page load
+window.onload = () => {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+        authContainer.classList.add('hidden');
+        chatContainer.classList.remove('hidden');
+        userNameSpan.textContent = currentUser.name;
+    }
+};
+
+// Logout functionality
+function logout() {
+    // Clear user information from local storage
+    localStorage.removeItem('currentUser');
+    currentUser = null;
+    authContainer.classList.remove('hidden');
+    chatContainer.classList.add('hidden');
+}
 
 // Handle profile navigation
 profileIcon.addEventListener('click', () => {
@@ -92,7 +114,15 @@ backToChatFromProfileBtn.addEventListener('click', () => {
 });
 
 // Chatbot functionality
-document.getElementById('send-message').addEventListener('click', async () => {
+document.getElementById('send-message').addEventListener('click', sendMessage);
+document.getElementById('userInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { // Check if Enter is pressed without Shift
+        e.preventDefault(); // Prevent new line
+        sendMessage();
+    }
+});
+
+async function sendMessage() {
     const userInput = document.getElementById('userInput').value;
 
     // Create a new div for the user message
@@ -152,7 +182,11 @@ document.getElementById('send-message').addEventListener('click', async () => {
 
     // Clear the input field
     document.getElementById('userInput').value = '';
-});
+
+    // Scroll to the bottom of the chat body
+    const chatBody = document.querySelector('.chat-body');
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
 
 // Show history
 seeHistoryBtn.addEventListener('click', () => {
@@ -173,3 +207,6 @@ backToChatBtn.addEventListener('click', () => {
     historyContainer.classList.add('hidden');
     chatContainer.classList.remove('hidden');
 });
+
+// Add event listener for logout button (assuming you have a logout button)
+document.getElementById('logoutBtn').addEventListener('click', logout);
