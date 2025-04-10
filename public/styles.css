@@ -1,0 +1,246 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #007bff, #00d4ff); /* Gradient background */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Containers */
+.container, .auth-container {
+    max-width: 400px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover, .auth-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+/* Inputs and Buttons */
+input, textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Links and Text */
+p {
+    font-size: 14px;
+    color: #555;
+}
+
+p span {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+p span:hover {
+    color: #0056b3;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
+/* Response Section */
+#response {
+    margin-top: 20px;
+    text-align: left;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Profile Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes the image circular */
+    margin-right: 10px;
+    cursor: pointer; /* Makes it clickable */
+    object-fit: cover; /* Ensures the image fits within the circle */
+}
+
+.profile span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.actions button {
+    margin-left: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.actions button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    background: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+    color: white;
+}
+
+/* History Section */
+#historyList {
+    list-style: none;
+    padding: 0;
+}
+
+#historyList li {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container, .auth-container {
+        padding: 15px;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.2rem;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}
+
+.chat-body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto; /* Enable scrolling */
+}
+
+.message {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%; /* Limit width */
+}
+
+.user-message {
+    background-color: #d1e7dd; /* Light green for user messages */
+    align-self: flex-end; /* Align user messages to the right */
+}
+
+.bot-message {
+    background-color: #f8d7da; /* Light red for bot messages */
+    align-self: flex-start; /* Align bot messages to the left */
+}
+
+.study-plan {
+    padding: 10px;
+    background: #f8f9fa; /* Light background for the study plan */
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.study-plan ul {
+    list-style-type: disc; /* Bullet points */
+    padding-left: 20px; /* Indentation for bullet points */
+}
+
+.study-plan li {
+    margin-bottom: 5px; /* Space between items */
+}
