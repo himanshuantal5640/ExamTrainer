@@ -26,25 +26,22 @@ const ai = new GoogleGenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Define the /api/generate-plan endpoint
 app.post('/api/generate-plan', async (req, res) => {
-    const userInput = req.body.input; // Get user input from the request body
+    const userInput = req.body.input;
     console.log('Received input:', userInput);
 
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: userInput,
-        });
+        const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" }); // Or "gemini-pro"
+        const result = await model.generateContent(userInput);
+        const response = await result.response;
+        const text = await response.text();
 
-        if (response && response.text) {
-            res.json({ plan: response.text });
-        } else {
-            res.status(500).json({ error: 'Invalid response from Google GenAI' });
-        }
+        res.json({ plan: text });
     } catch (error) {
         console.error('Error generating study plan:', error.message || error);
         res.status(500).json({ error: 'Failed to generate study plan. Please try again later.' });
     }
 });
+
 
 // Start the server
 app.listen(port, () => {
