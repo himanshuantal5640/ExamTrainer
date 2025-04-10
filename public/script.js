@@ -97,6 +97,7 @@ function logout() {
     currentUser = null;
     authContainer.classList.remove('hidden');
     chatContainer.classList.add('hidden');
+    profileContainer.classList.add('hidden'); // Hide profile container on logout
 }
 
 // Handle profile navigation
@@ -208,5 +209,5 @@ backToChatBtn.addEventListener('click', () => {
     chatContainer.classList.remove('hidden');
 });
 
-// Add event listener for logout button (assuming you have a logout button)
+// Add event listener for logout button
 document.getElementById('logoutBtn').addEventListener('click', logout);
